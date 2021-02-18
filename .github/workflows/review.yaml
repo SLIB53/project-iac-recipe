@@ -1,0 +1,44 @@
+name: Review
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  lint-actions:
+    name: Lint GitHub Actions
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Prettier
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+      - run: npm --global install prettier
+
+      - name: Lint workflow code
+        run: prettier --check .github
+
+  lint-docs:
+    name: Lint Docs
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Prettier
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+      - run: npm --global install prettier
+
+      - name: Lint markdown
+        run: prettier --check **.md

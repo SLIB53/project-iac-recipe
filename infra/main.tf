@@ -3,7 +3,8 @@ terraform {
 }
 
 resource "google_cloud_run_service" "default" {
-  name = "hello-cloud-run"
+  name     = "hello-cloud-run"
+  location = "us-central1"
 
   template {
     spec {

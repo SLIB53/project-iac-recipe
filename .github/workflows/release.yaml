@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy:
-    name: deploy
+    name: Deploy
 
     environment: production
     runs-on: ubuntu-latest

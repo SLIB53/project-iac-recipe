@@ -1,8 +1,8 @@
 # Project IaC Recipe
 
-This recipe is an Infrastructure as Code (IaC) recipe for deploying cloud 
-projects in Google Cloud Platform (GCP). It demonstrates how to set up an 
-Infrastructure-as-Code project with GitHub Actions, and includes a couple 
+This recipe is an Infrastructure as Code (IaC) recipe for deploying cloud
+projects in Google Cloud Platform (GCP). It demonstrates how to set up an
+Infrastructure-as-Code project with GitHub Actions, and includes a couple
 workflows:
 
 - [review workflow](./.github/workflows/review.yaml)

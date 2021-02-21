@@ -59,34 +59,18 @@ jobs:
         run: terraform fmt -recursive -check
         working-directory: ./infra
 
-  validate-iac:
-    name: Validate IaC
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v1
-
-      - name: Initalize Terraform
-        run: |
-          terraform init \
-            -backend-config=${{ secrets.GCS_BACKEND_BUCKET_NAME }}
-        working-directory: ./infra
-
-      - name: Validate Terraform code
-        run: terraform validate
-        working-directory: ./infra
-
   plan-iac:
     name: Plan IaC
 
     runs-on: ubuntu-latest
 
     steps:
-      - name: Validate Terraform code
+      - name: Initalize Terraform
+        run: |
+          terraform init \
+            -backend-config=${{ secrets.GCS_BACKEND_BUCKET_NAME }}
+        working-directory: ./infra
+
+      - name: Render Plan
         run: terraform plan
         working-directory: ./infra

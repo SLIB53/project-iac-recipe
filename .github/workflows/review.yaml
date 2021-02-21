@@ -7,8 +7,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  lint-actions:
-    name: Lint GitHub Actions
+  lint-ci-cd:
+    name: Lint CI/CD
 
     runs-on: ubuntu-latest
 
@@ -42,3 +42,49 @@ jobs:
 
       - name: Lint markdown
         run: prettier --check **.md
+
+  lint-iac:
+    name: Lint IaC
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Lint Terraform code
+        run: terraform fmt -recursive -check
+        working-directory: ./infra
+
+  plan-iac:
+    name: Plan IaC
+
+    environment: production
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Initalize Terraform
+        run: |
+          terraform init \
+            -backend-config="bucket=${{ secrets.GCS_BACKEND_BUCKET_NAME }}"
+        working-directory: ./infra
+
+      - name: Render Plan
+        run: terraform plan
+        working-directory: ./infra
